@@ -8,7 +8,7 @@ defineProps({
     type: String,
     required: true,
   },
-  car_number: {
+  car_id: {
     type: String,
     required: true,
   },
@@ -19,17 +19,17 @@ defineProps({
 <template>
   <div class="wrapper">
     <div class="title">
-      <div class="quartet">Quartet {{ car_number.charAt(0) }}</div>
+      <div class="quartet">Quartet {{ car_id.charAt(0) }}</div>
       <h1>{{ car_name }}</h1>
       <h2>{{ car_version }}</h2>
     </div>
     <div class="card-number">
-      <h3>{{ car_number }}</h3>
+      <h3>{{ car_id }}</h3>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -71,9 +71,12 @@ h3 {
   align-items: center;
 }
 
-.title h1,
-.title h3 {
-  text-align: left;
+.title {
+
+  h1,
+  h3 {
+    text-align: left;
+  }
 }
 
 @media (min-width: 1024px) {

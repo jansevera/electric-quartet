@@ -1,0 +1,288 @@
+@use './base.scss';
+
+body {
+  //background-color: var(--color-card-background);
+  color: #fff;
+}
+
+#app {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+
+  @media (max-width: 768px) {
+    padding: 0rem;
+  }
+}
+
+
+strong {
+  font-weight: 700;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+.card {
+  background-color: var(--color-card-background);
+  color: var(--color-card-text);
+  padding: 18px;
+  border-radius: 18px;
+  max-width: 360px;
+  position: relative;
+
+  @media (min-width: calc(1024px + 1px)) {
+    width: 21.9em;
+  }
+
+  @media (max-width: 1024px) {
+    width: 17.9em;
+  }
+
+  @media (max-width: 768px) {
+    width: 14.9em;
+  }
+}
+
+/* ===== CARD BACK ===== */
+.back {
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-highlight) 22%, transparent) 0%, transparent 42%), repeating-linear-gradient(60deg, color-mix(in srgb, var(--color-highlight) 9%, transparent) 0 1px, transparent 1px 1.6em), repeating-linear-gradient(-60deg, color-mix(in srgb, var(--color-highlight) 9%, transparent) 0 1px, transparent 1px 1.6em), var(--color-card-background);
+  max-height: 560px;
+  width: 100%;
+  aspect-ratio: 360 / 520;
+  font-size: calc(14px * var(--s));
+
+  .frame {
+    position: absolute;
+    inset: 1em;
+    border: 1px solid color-mix(in srgb, var(--color-highlight) 55%, transparent);
+    border-radius: .85em;
+    box-shadow: inset 0 0 1.6em -.4em color-mix(in srgb, var(--color-highlight) 45%, transparent);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2.2em;
+      height: 2.2em;
+      border: .15em solid var(--color-highlight)
+    }
+
+    &::before {
+      top: -.15em;
+      left: -.15em;
+      border-right: 0;
+      border-bottom: 0;
+      border-top-left-radius: .85em
+    }
+
+    &::after {
+      bottom: -.15em;
+      right: -.15em;
+      border-left: 0;
+      border-top: 0;
+      border-bottom-right-radius: .85em
+    }
+  }
+
+  .mark {
+    position: absolute;
+    font-weight: 700;
+    font-size: 1em;
+    letter-spacing: .2em;
+    color: var(--color-highlight);
+
+    &.tl {
+      top: 1em;
+      left: 1.1em
+    }
+
+    &.br {
+      bottom: 1em;
+      right: 1.1em;
+      transform: rotate(180deg)
+    }
+  }
+
+  .center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.3em
+  }
+
+  .word {
+    font-size: 1.15em;
+    font-weight: 700;
+    letter-spacing: .55em;
+    padding-left: .55em;
+
+    &.flip {
+      transform: rotate(180deg)
+    }
+  }
+
+  .emblem {
+    width: 10.5em;
+    height: 10.5em;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: .15em solid var(--color-highlight);
+    box-shadow: 0 0 1.6em color-mix(in srgb, var(--color-highlight) 55%, transparent), inset 0 0 1.6em color-mix(in srgb, var(--color-highlight) 35%, transparent);
+    background: var(--color-card-background);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: .8em;
+      border-radius: 50%;
+      border: 1px dashed color-mix(in srgb, var(--color-highlight) 60%, transparent)
+    }
+
+    svg {
+      width: 4.6em;
+      height: auto;
+      filter: drop-shadow(0 0 .5em var(--color-highlight))
+    }
+  }
+
+  .meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: .72em;
+    letter-spacing: .3em;
+    color: var(--color-faint);
+
+    &.bottom {
+      bottom: 3.6em
+    }
+
+    &.top {
+      top: 3.6em;
+      transform: rotate(180deg)
+    }
+  }
+
+
+
+  @media (min-width: calc(1024px + 1px)) {
+    width: 21.9em;
+  }
+
+  @media (max-width: 1024px) {
+    width: 17.9em;
+  }
+
+  @media (max-width: 768px) {
+    width: 14.9em;
+  }
+}
+
+/* ===== game-table ===== */
+.game-table {
+  display: grid;
+  grid-template-columns: 7em 18em auto 18em 7em;
+  //min-width: 1080px;
+  border-radius: 22px;
+  padding: 18px 26px 22px;
+  gap: 18px;
+  background: radial-gradient(ellipse 60% 55% at 50% 48%, var(--table-glow) 0%, var(--table-bg) 70%);
+  box-shadow: inset 0 0 0 1px #18212B;
+
+  >* {
+    border: 1px solid greenyellow;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 5em 15em auto 15em 5em;
+  }
+
+  @media (min-width: calc(1024px + 1px)) {
+    grid-template-columns: 10em 22em auto 22em 10em;
+  }
+}
+
+.top-bar,
+.stat-picker {
+  grid-column: 1 / 6;
+}
+
+.deck-pile {
+  position: relative;
+  font-size: calc(14px * var(--s));
+  padding: 0 11px 11px 0;
+
+  .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+  }
+
+  .card:nth-child(1) {
+    top: 11px;
+    left: 11px;
+
+    .frame {
+      border: 1px solid var(--color-faint);
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .card:nth-child(2) {
+    top: 5px;
+    left: 5px;
+
+    .frame {
+      border: 1px solid var(--color-faint);
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .card:last-child {
+    position: relative; // stays in flow, so the pile gets its height
+  }
+}
+
+.rival {
+  .card {
+    box-shadow: 0 0 0 1px #1A2029, 0 0 0 3px color-mix(in srgb, var(--rival) 45%, transparent), 0 18px 40px -12px #000c;
+  }
+}
+
+@media (hover: hover) {
+  a:hover {
+    color: inherit
+  }
+}
+
+@media (min-width: 1024px) {
+  #app {
+    padding: 0;
+  }
+}

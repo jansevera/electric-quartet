@@ -1,41 +1,47 @@
 <script setup>
+import { toDisplayString } from 'vue';
 import Footer from './components/Footer.vue';
 import Header from './components/Header.vue'
 import MainSection from './components/MainSection.vue'
-import DefaultImage from '/images/default-image.svg'
-import { ref } from 'vue';
 
-const cars = ref(
-  [
-    {
-      "car_number": "A1",
-      "car_name": "Tesla Model 3",
-      "car_version": "Long Range AWD",
-      "range": 629,
-      "acc": 4.4,
-      "speed": 201,
-      "battery": 78,
-    },
+defineProps({
+  car: {
+    type: Object,
+    required: true,
+  },
+  hide: {
+    type: Boolean,
+    required: false
+  }
 
-  ])
+})
+
+const FALLBACK_IMAGE = '/images/default-image.svg'
+
+function useFallback(event) {
+  const img = event.target
+  if (!img.src.endsWith(FALLBACK_IMAGE)) {
+    img.src = FALLBACK_IMAGE
+  }
+}
 </script>
 
 <template>
   <div class="card">
     <header>
-      <Header :car_name=cars[0].car_name :car_version=cars[0].car_version :car_number=cars[0].car_number />
+      <Header :car_name="car.car_name" :car_version="car.car_version" :car_id="car.car_id" />
     </header>
     <main>
       <div class="image-wrap">
-        <img :alt="cars[0].car_name" class="car-image" :src="`/images/${cars[0].car_number}.png`" width="125"
-          height="125" />
+        <img :alt="car.car_name" class="car-image" :src="`/images/${car.car_id}.png`" width="125" height="125"
+          @error="useFallback" />
       </div>
       <div class="car-reflection" aria-hidden="true">
-        <img alt="" :src="`/images/${cars[0].car_number}.png`" width="125" height="125" />
+        <img alt="" :src="`/images/${car.car_id}.png`" width="125" height="125" @error="useFallback" />
       </div>
-      <MainSection :range="cars[0].range" :acc="cars[0].acc" :speed="cars[0].speed" :battery="cars[0].battery" />
+      <MainSection :range="car.range" :acc="car.acc" :speed="car.speed" :battery="car.battery" />
     </main>
-    <footer>
+    <footer v-if="!hide">
       <Footer />
     </footer>
   </div>
@@ -113,6 +119,10 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+
+footer {
+  padding-top: 4rem;
 }
 
 @media (min-width: 1024px) {
