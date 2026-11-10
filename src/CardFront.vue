@@ -4,13 +4,25 @@ import Footer from './components/Footer.vue';
 import Header from './components/Header.vue'
 import MainSection from './components/MainSection.vue'
 
-defineProps({
+const props = defineProps({
   car: {
     type: Object,
     required: true,
   },
   hide: {
     type: Boolean,
+    required: false
+  },
+  picked: {
+    type: String,
+    required: false
+  },
+  compare: {
+    type: String,
+    required: false
+  },
+  player: {
+    type: String,
     required: false
   }
 
@@ -39,7 +51,8 @@ function useFallback(event) {
       <div class="car-reflection" aria-hidden="true">
         <img alt="" :src="`/images/${car.car_id}.png`" width="125" height="125" @error="useFallback" />
       </div>
-      <MainSection :range="car.range" :acc="car.acc" :speed="car.speed" :battery="car.battery" />
+      <MainSection :range="car.range" :acc="car.acc" :speed="car.speed" :battery="car.battery" :picked="props.picked"
+        :compare="props.compare" :player="props.player" />
     </main>
     <footer v-if="!hide">
       <Footer />

@@ -26,6 +26,8 @@
   display: flex;
   position: relative;
   flex-wrap: wrap;
+  padding: 3px;
+  border: 2px solid transparent;
 }
 
 .details {

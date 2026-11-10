@@ -24,6 +24,8 @@ defineProps({
   },
 })
 
+const emit = defineEmits(['pick'])
+
 const features = ref([
   { id: "range", desc: "Range (WLTP)" },
   { id: "acc", desc: "0-100 km/h" },
@@ -35,29 +37,32 @@ const features = ref([
 
 <template>
   <div class="wrapper">
-    <div v-for="item in features" :key="item.id" class="footer-item">
-      <div class="icon">
-        <AccelerationIco v-if="item.id === 'acc'" />
-        <IconBattery v-else-if="item.id === 'battery'" />
-        <IconRange v-else-if="item.id === 'range'" />
-        <IconSpeed v-else-if="item.id === 'speed'" />
+    <button v-for="item in features" :key="item.id" class="footer-item" :data-id="item.id"
+      @click="emit('pick', item.id)">
+      <div>
+        <div class="icon">
+          <AccelerationIco v-if="item.id === 'acc'" />
+          <IconBattery v-else-if="item.id === 'battery'" />
+          <IconRange v-else-if="item.id === 'range'" />
+          <IconSpeed v-else-if="item.id === 'speed'" />
+        </div>
+        <div class="label">{{ item.desc }}</div>
       </div>
-      <div class="item-id"></div>
-      <div class="label">{{ item.desc }}</div>
       <div class="value">
         <template v-if="item.id === 'range'">{{ range }} km</template>
         <template v-else-if="item.id === 'acc'">{{ acc }} s<br><span>lower wins</span></template>
         <template v-else-if="item.id === 'speed'">{{ speed }} km/h</template>
         <template v-else-if="item.id === 'battery'">{{ battery }} kWh</template>
       </div>
-    </div>
+    </button>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 10px;
 }
 
 .footer-item {
@@ -66,7 +71,28 @@ const features = ref([
   border-radius: 10px;
   flex: 0 1 32%;
   font-size: 12px;
-  padding: 10px 5px;
+  padding: 10px 15px;
+  max-width: 150px;
+  text-align: left;
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 14px -4px var(--color-highlight)
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: 23px;
+  height: 16px;
 }
 
 .item-id {
@@ -74,10 +100,19 @@ const features = ref([
 }
 
 .label {
-  color: #F2F5F8;
+  display: inline;
+  color: var(--color-muted);
+  width: calc(100% - 25px);
 }
 
-.value span {
-  color: #FFC94D;
+.value {
+  font-size: 17px;
+  margin: 5px 0;
+
+  span {
+    font-size: 12px;
+    line-height: normal;
+    color: #FFC94D;
+  }
 }
 </style>

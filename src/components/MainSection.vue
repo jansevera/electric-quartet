@@ -4,7 +4,7 @@ import AccelerationIco from './icons/IconAcceleration.vue'
 import IconBattery from './icons/IconBattery.vue';
 import IconRange from './icons/IconRange.vue';
 import IconSpeed from './icons/IconSpeed.vue';
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import maxValues from '@/data/maxValues.json'
 
 const props = defineProps({
@@ -24,8 +24,28 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  picked: {
+    type: String,
+    required: false
+  },
+  compare: {
+    type: String,
+    required: false
+  },
+  player: {
+    type: String,
+    required: false
+  }
 })
 
+const pickedClass = "picked"
+
+const opposite = { win: 'lose', lose: 'win', tie: 'tie' }
+
+// compare is always from the user's point of view, so flip it for the rival
+const resultClass = computed(() =>
+  props.player === 'user' ? props.compare : opposite[props.compare]
+)
 
 const features = ref([
   { id: "range", desc: "Range (WLTP)" },
@@ -49,7 +69,8 @@ function barWidth(id) {
 </script>
 
 <template>
-  <FeatureItem v-for="item in features" :key="item.id">
+  <FeatureItem v-for="item in features" :key="item.id"
+    :class="picked === item.id ? [pickedClass, resultClass] : picked ? 'dim' : ''">
     <template #icon>
       <AccelerationIco v-if="item.id == 'acc'" />
       <IconBattery v-if="item.id == 'battery'" />
@@ -70,3 +91,28 @@ function barWidth(id) {
   </FeatureItem>
 
 </template>
+
+<style lang="scss" scoped>
+.dim {
+  opacity: .4;
+}
+
+.picked {
+  border-radius: 5px;
+
+  &.win {
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--color-highlight) 60%, transparent);
+  }
+
+  &.lose {
+    border-color: var(--rival);
+    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--rival) 60%, transparent)
+  }
+
+  &.tie {
+    border-color: var(--tie);
+    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--tie) 60%, transparent)
+  }
+}
+</style>
