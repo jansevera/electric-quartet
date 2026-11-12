@@ -102,17 +102,28 @@ function barWidth(id) {
 
   &.win {
     border-color: var(--color-highlight);
+    color: var(--color-highlight);
     box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--color-highlight) 60%, transparent);
   }
 
   &.lose {
     border-color: var(--rival);
-    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--rival) 60%, transparent)
+    color: var(--rival);
+    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--rival) 60%, transparent);
+
+    .bar {
+      background-color: var(--rival);
+    }
   }
 
   &.tie {
     border-color: var(--tie);
-    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--tie) 60%, transparent)
+    color: var(--tie);
+    box-shadow: 0 0 1.2em -.2em color-mix(in srgb, var(--tie) 60%, transparent);
+
+    .bar {
+      background-color: var(--tie);
+    }
   }
 }
 </style>

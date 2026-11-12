@@ -13,7 +13,7 @@ const props = defineProps({
 })
 const maxCards = 32
 
-const rivalCards = computed(() => maxCards - props.userCards)
+//const rivalCards = computed(() => maxCards - props.userCards)
 
 
 const userName = ref("Jan")

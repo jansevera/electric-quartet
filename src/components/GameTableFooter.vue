@@ -22,6 +22,10 @@ defineProps({
     type: Number,
     required: true,
   },
+  picked: {
+    type: String,
+    required: false
+  },
 })
 
 const emit = defineEmits(['pick'])
@@ -32,13 +36,14 @@ const features = ref([
   { id: "speed", desc: "Top speed" },
   { id: "battery", desc: "Battery" }])
 
+const pickedClass = "picked"
 
 </script>
 
 <template>
   <div class="wrapper">
     <button v-for="item in features" :key="item.id" class="footer-item" :data-id="item.id"
-      @click="emit('pick', item.id)">
+      :class="{ [pickedClass]: picked === item.id }" :disabled="!!picked" @click="emit('pick', item.id)">
       <div>
         <div class="icon">
           <AccelerationIco v-if="item.id === 'acc'" />
@@ -83,9 +88,20 @@ const features = ref([
   flex-wrap: wrap;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--color-highlight);
     box-shadow: 0 0 14px -4px var(--color-highlight)
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &.picked {
+    opacity: 1;
+    border-color: var(--color-highlight);
+    background:
+      color-mix(in srgb, var(--color-highlight) 12%, var(--color-card-background));
   }
 }
 

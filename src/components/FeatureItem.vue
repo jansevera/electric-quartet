@@ -50,7 +50,7 @@ i {
   place-items: center;
   place-content: center;
   width: 32px;
-  color: var(--highlight-color);
+  color: var(--color-highlight);
 }
 
 h3 {

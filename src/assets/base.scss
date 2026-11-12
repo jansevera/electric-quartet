@@ -66,6 +66,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button:disabled {
+  cursor: not-allowed !important;
+}
+
 
 .highlight {
   color: var(--color-highlight);
@@ -81,4 +85,8 @@ body {
 
 .uppercase {
   text-transform: uppercase !important;
+}
+
+.rival {
+  color: var(--rival);
 }
