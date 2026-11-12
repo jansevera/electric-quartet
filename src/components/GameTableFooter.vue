@@ -26,6 +26,10 @@ defineProps({
     type: String,
     required: false
   },
+  disabled: {
+    type: Boolean,
+    default: false
+  },
 })
 
 const emit = defineEmits(['pick'])
@@ -43,7 +47,7 @@ const pickedClass = "picked"
 <template>
   <div class="wrapper">
     <button v-for="item in features" :key="item.id" class="footer-item" :data-id="item.id"
-      :class="{ [pickedClass]: picked === item.id }" :disabled="!!picked" @click="emit('pick', item.id)">
+      :class="{ [pickedClass]: picked === item.id }" :disabled="!!picked || disabled" @click="emit('pick', item.id)">
       <div>
         <div class="icon">
           <AccelerationIco v-if="item.id === 'acc'" />

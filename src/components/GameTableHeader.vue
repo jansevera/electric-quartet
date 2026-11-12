@@ -5,16 +5,24 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-
   rivalCards: {
     type: Number,
     required: true,
+  },
+  tieCards: {
+    type: Number,
+    required: true,
+  },
+  maxCards: {
+    type: Number,
+    required: true,
+  },
+  numberOfRounds: {
+    type: Number,
+    required: true
   }
+
 })
-const maxCards = 32
-
-//const rivalCards = computed(() => maxCards - props.userCards)
-
 
 const userName = ref("Jan")
 const userAbr = computed(() => {
@@ -30,7 +38,12 @@ const rivalAbr = ref("R")
 
 
 const barWidth = computed(() => {
-  const ratio = props.userCards / maxCards
+  const ratio = props.userCards / props.maxCards
+  return Math.min(Math.max(ratio, 0), 1) * 100 + '%'
+})
+
+const tieBarWidth = computed(() => {
+  const ratio = props.tieCards / props.maxCards
   return Math.min(Math.max(ratio, 0), 1) * 100 + '%'
 })
 
@@ -45,16 +58,19 @@ const barWidth = computed(() => {
     <div class="score">
       <div class="text">
         <div><strong>{{ userCards }}</strong> <span class="muted">cards</span></div>
-        <div><span class="muted">of 32</span></div>
+        <div><span class="muted">of {{ maxCards }}</span></div>
         <div>{{ rivalCards }} <span class="muted">cards</span></div>
       </div>
       <div class="score-bar">
         <div class="bar" :style="{ width: barWidth }">&nbsp;</div>
+        <div v-if="tieCards > 0" class="tie-bar" :style="{ width: tieBarWidth }">
+          <div class="info">pot {{ tieCards }}</div>
+        </div>
       </div>
     </div>
     <div class="profile rival">
       <div class="icon">{{ rivalAbr }}</div>
-      <div><strong>{{ rivalName }}</strong><br /><span class="muted">CPU · round 12</span></div>
+      <div><strong>{{ rivalName }}</strong><br /><span class="muted">CPU · round {{ props.numberOfRounds }}</span></div>
     </div>
   </div>
 </template>
@@ -121,7 +137,7 @@ const barWidth = computed(() => {
   span {
     font-size: 12px;
     line-height: normal;
-    color: #FFC94D;
+    color: var(--tie);
   }
 }
 
@@ -143,11 +159,34 @@ const barWidth = computed(() => {
   width: 100%;
   max-width: 340px;
   border-radius: 3px;
+  display: flex;
 
   .bar {
     background-color: #3DF5C8;
     border-radius: 3px;
     height: 6px;
+  }
+
+  .tie-bar {
+    background-color: var(--tie);
+    border-radius: 3px;
+    height: 6px;
+    margin-left: -3px;
+    position: relative;
+
+    .info {
+      position: relative;
+      color: var(--tie);
+      background-color: var(--table-bg);
+      border: 1px solid var(--tie);
+      border-radius: 10px;
+      font-size: 12px;
+      margin-top: -28px;
+      margin-left: -5px;
+      padding: 2px 5px;
+      width: 57px;
+      text-align: center;
+    }
   }
 }
 </style>

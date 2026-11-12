@@ -60,99 +60,84 @@ function useFallback(event) {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .card {
   background-color: var(--color-card-background);
   color: var(--color-card-text);
   padding: 18px;
   border-radius: 18px;
   max-width: 360px;
-}
 
-.car-image {
-  aspect-ratio: 324 / 140;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  position: relative;
-  z-index: 1;
-  /*border: 1px solid red;*/
-}
+  .car-image {
+    aspect-ratio: 324 / 140;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    position: relative;
+    z-index: 1;
+    /*border: 1px solid red;*/
+  }
 
-.image-wrap {
-  position: relative;
-  margin: 0;
-}
+  .image-wrap {
+    position: relative;
+    margin: 0;
+  }
 
-/* light reflection on the "floor" under the car */
-.image-wrap::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  bottom: -12px;
-  width: 80%;
-  height: 32px;
-  background: radial-gradient(ellipse at center,
-      color-mix(in srgb, var(--color-highlight) 55%, transparent) 0%,
-      color-mix(in srgb, var(--color-highlight) 20%, transparent) 50%,
-      transparent 80%);
-  filter: blur(6px);
-  pointer-events: none;
-}
-
-/* mirrored car below the image, fading out */
-.car-reflection {
-  height: 40px;
-  overflow: hidden;
-  pointer-events: none;
-  /*border: 1px solid green;*/
-  margin-top: -9px;
-}
-
-.car-reflection img {
-  display: block;
-  aspect-ratio: 324 / 140;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  object-position: center bottom;
-  transform: scaleY(-1);
-  opacity: 0.35;
-  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 30%);
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 30%);
-
-}
+  /* light reflection on the "floor" under the car */
+  .image-wrap::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    bottom: -12px;
+    width: 80%;
+    height: 32px;
+    background: radial-gradient(ellipse at center,
+        color-mix(in srgb, var(--color-highlight) 55%, transparent) 0%,
+        color-mix(in srgb, var(--color-highlight) 20%, transparent) 50%,
+        transparent 80%);
+    filter: blur(6px);
+    pointer-events: none;
+  }
 
 
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-footer {
-  padding-top: 4rem;
-}
+  /* mirrored car below the image, fading out */
+  .car-reflection {
+    height: 40px;
+    overflow: hidden;
+    pointer-events: none;
+    /*border: 1px solid green;*/
+    margin-top: -9px;
+  }
 
-@media (min-width: 1024px) {
+  .car-reflection img {
+    display: block;
+    aspect-ratio: 324 / 140;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center bottom;
+    transform: scaleY(-1);
+    opacity: 0.35;
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 30%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 30%);
+
+  }
+
+
   header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    line-height: 1.5;
   }
 
   .logo {
-    margin: 0 2rem 0 0;
+    display: block;
+    margin: 0 auto 2rem;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  footer {
+    padding-top: 4rem;
   }
 }
 </style>

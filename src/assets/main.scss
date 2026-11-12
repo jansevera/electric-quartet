@@ -195,6 +195,9 @@ a,
   }
 }
 
+
+
+
 /* ===== game-table ===== */
 .game-table {
   display: grid;
@@ -247,7 +250,8 @@ a,
 
   }
 
-  .card:nth-child(1) {
+  // count from the top card (last child), so 1, 2 or 3 cards all stack correctly
+  .card:nth-last-child(3) {
     top: 11px;
     left: 11px;
 
@@ -261,7 +265,7 @@ a,
     }
   }
 
-  .card:nth-child(2) {
+  .card:nth-last-child(2) {
     top: 5px;
     left: 5px;
 
@@ -277,6 +281,12 @@ a,
 
   .card:last-child {
     position: relative; // stays in flow, so the pile gets its height
+  }
+}
+
+.play-card {
+  .card {
+    box-shadow: 0 0 0 1px #1A2029, 0 0 0 3px color-mix(in srgb, var(--color-highlight) 45%, transparent), 0 18px 40px -12px #000c;
   }
 }
 
