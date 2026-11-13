@@ -45,11 +45,11 @@ function useFallback(event) {
     </header>
     <main>
       <div class="image-wrap">
-        <img :alt="car.car_name" class="car-image" :src="`/images/${car.car_id}.png`" width="125" height="125"
+        <img :alt="car.car_name" class="car-image" :src="`/images/${car.car_id}.webp`" width="125" height="125"
           @error="useFallback" />
       </div>
       <div class="car-reflection" aria-hidden="true">
-        <img alt="" :src="`/images/${car.car_id}.png`" width="125" height="125" @error="useFallback" />
+        <img alt="" :src="`/images/${car.car_id}.webp`" width="125" height="125" @error="useFallback" />
       </div>
       <MainSection :range="car.range" :acc="car.acc" :speed="car.speed" :battery="car.battery" :picked="props.picked"
         :compare="props.compare" :player="props.player" />
