@@ -28,7 +28,7 @@ const props = defineProps({
 
 })
 
-const FALLBACK_IMAGE = '/images/default-image.svg'
+const FALLBACK_IMAGE = 'images/default-image.svg'
 
 function useFallback(event) {
   const img = event.target
