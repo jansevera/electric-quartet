@@ -2,7 +2,7 @@
 import CardFront from './CardFront.vue';
 import cars from '@/data/cars.json'
 import CardBack from './CardBack.vue';
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import GameTableFooter from './components/GameTableFooter.vue';
 import GameTableHeader from './components/GameTableHeader.vue';
 import CardNo from './CardNo.vue';
@@ -62,6 +62,11 @@ const features = {
     speed: "Top speed",
     battery: "Battery"
 }
+
+const COUNTDOWN_SECONDS = 10
+const countdownToggle = ref(true)
+const countdownTimer = ref(COUNTDOWN_SECONDS)
+let countdownInterval = null
 
 function onPick(statId) {
     pickedStat.value = statId
@@ -140,6 +145,38 @@ function nextRound(deck) {
     }
 }
 
+// which deck gets the cards for the current round result
+function deckForResult(result) {
+    if (result === 'win') return userDeck.value
+    if (result === 'lose') return oponentDeck.value
+    return tieDeck.value
+}
+
+function stopCountdown() {
+    clearInterval(countdownInterval)
+    countdownInterval = null
+    countdownTimer.value = COUNTDOWN_SECONDS
+}
+
+function startCountdown() {
+    stopCountdown()
+    if (!countdownToggle.value || !compareResult.value) return
+    countdownInterval = setInterval(() => {
+        countdownTimer.value--
+        if (countdownTimer.value <= 0) goToNextRound()
+    }, 1000)
+}
+
+// used by the button and by the countdown when it reaches 0
+function goToNextRound() {
+    stopCountdown()
+    nextRound(deckForResult(compareResult.value))
+}
+
+// start the countdown when a round result appears or the toggle is switched on;
+// stop it when the result is cleared or the toggle is switched off
+watch([compareResult, countdownToggle], startCountdown)
+
 function randomFeature() {
     //random feature for rival
     const keys = Object.keys(features)          // ['range', 'acc', 'speed', 'battery']
@@ -166,10 +203,14 @@ function oponentPlay() {
     }, delay)
 }
 
-onBeforeUnmount(() => clearTimeout(oponentTimer))
+onBeforeUnmount(() => {
+    clearTimeout(oponentTimer)
+    clearInterval(countdownInterval)
+})
 
 // reset everything to the initial state and deal a fresh shuffled deck
 function newGame() {
+    stopCountdown()
     clearTimeout(oponentTimer)
     oponentTimer = null
     oponentThinking.value = false
@@ -225,7 +266,8 @@ newGame()
                 <div class="muted" v-else>{{ features[pickedStat] }} · Higher value wins</div>
                 <div class="muted">+2 cards to your deck</div>
 
-                <div><button @click="nextRound(userDeck)" class="next">Next round</button></div>
+                <div><button @click="goToNextRound" class="next">Next round<span v-if="countdownToggle"> ({{
+                    countdownTimer }})</span></button></div>
             </div>
             <div class="result" v-else-if="compareResult === 'lose'" :class="revealed ? compareResult : ''">
                 <h1 class="big rival">Rival wins the round</h1>
@@ -237,7 +279,8 @@ newGame()
                 <div class="muted why" v-if="pickedStat === 'acc'">0–100 km/h · Lower time wins<br></div>
                 <div class="muted" v-else>{{ features[pickedStat] }} · Higher value wins</div>
                 <div class="muted">2 cards go to the rival</div>
-                <div><button @click="nextRound(oponentDeck)" class="next">Next round</button></div>
+                <div><button @click="goToNextRound" class="next">Next round<span v-if="countdownToggle"> ({{
+                    countdownTimer }})</span></button></div>
             </div>
             <div class="result" v-else-if="compareResult === 'tie'" :class="revealed ? compareResult : ''">
                 <h1 class="big tie">Tie</h1>
@@ -251,7 +294,8 @@ newGame()
                 <div class="muted">Both cards go to the pot. <br>
                     {{ currentPicker === user ? 'You pick again.' : 'Rival picks again.' }}
                 </div>
-                <div><button @click="nextRound(tieDeck)" class="next">Next round</button></div>
+                <div><button @click="goToNextRound" class="next">Next round<span v-if="countdownToggle"> ({{
+                    countdownTimer }})</span></button></div>
             </div>
 
             <div v-else-if="gameFinished">
@@ -279,6 +323,10 @@ newGame()
                 <h1>VS</h1>
                 <div class="muted">Rival card stays face down until you pick</div>
             </div>
+
+            <label class="countdown-toggle muted" v-if="!gameFinished">
+                <input type="checkbox" v-model="countdownToggle" /> Auto next round ({{ COUNTDOWN_SECONDS }} s)
+            </label>
         </div>
         <div class="player-zone rival"><!-- Rival -->
             <div class="zone-caption text-center uppercase muted" v-if="!gameFinished">Rival plays</div>
@@ -383,6 +431,13 @@ newGame()
             text-shadow: none;
             color: var(--c);
         }
+    }
+
+    .countdown-toggle {
+        margin-top: 12px;
+        font-size: 13px;
+        cursor: pointer;
+        user-select: none;
     }
 
     button.next {
